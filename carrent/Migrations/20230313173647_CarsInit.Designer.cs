@@ -9,11 +9,11 @@ using carrent.Data;
 
 #nullable disable
 
-namespace carrent.Migrations
+namespace Carrent.Migrations
 {
     [DbContext(typeof(CarDbContext))]
-    [Migration("20230301101833_Carr")]
-    partial class Carr
+    [Migration("20230313173647_CarsInit")]
+    partial class CarsInit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -205,8 +205,12 @@ namespace carrent.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<DateTime>("RegesterOn")
                         .HasColumnType("datetime2");
@@ -214,8 +218,8 @@ namespace carrent.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Year")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -232,7 +236,7 @@ namespace carrent.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("Adres")
+                    b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -240,8 +244,9 @@ namespace carrent.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("EGN")
-                        .HasColumnType("int");
+                    b.Property<string>("EGN")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -407,7 +412,7 @@ namespace carrent.Migrations
                         .IsRequired();
 
                     b.HasOne("carrent.Data.Clieunt", "Clieunts")
-                        .WithMany("Rezerants")
+                        .WithMany("Reservations")
                         .HasForeignKey("ClieuntId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -429,7 +434,7 @@ namespace carrent.Migrations
 
             modelBuilder.Entity("carrent.Data.Clieunt", b =>
                 {
-                    b.Navigation("Rezerants");
+                    b.Navigation("Reservations");
                 });
 #pragma warning restore 612, 618
         }

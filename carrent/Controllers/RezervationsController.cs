@@ -6,23 +6,39 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using carrent.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Carrent.Controllers
 {
+    [Authorize]
     public class RezervationsController : Controller
     {
         private readonly CarDbContext _context;
+        private readonly UserManager<Clieunt> _userManager;
 
-        public RezervationsController(CarDbContext context)
+        public RezervationsController(CarDbContext context, UserManager<Clieunt> userManager)
         {
+            _userManager= userManager;
             _context = context;
         }
 
         // GET: Rezervations
+
+        
         public async Task<IActionResult> Index()
         {
-            var carDbContext = _context.Rezervation.Include(r => r.Cars).Include(r => r.Clieunts);
-            return View(await carDbContext.ToListAsync());
+            if (User.IsInRole("User"))
+            {
+                var carDbContext = _context.Rezervation.Include(r => r.Cars).Include(r => r.Clieunts).Where(x=>x.ClieuntId==_userManager.GetUserId(User));
+                return View(await carDbContext.ToListAsync());
+            }
+            else
+            {
+                var carDbContext = _context.Rezervation.Include(r => r.Cars).Include(r => r.Clieunts);
+                return View(await carDbContext.ToListAsync());
+            }
+            
         }
 
         // GET: Rezervations/Details/5
@@ -48,8 +64,9 @@ namespace Carrent.Controllers
         // GET: Rezervations/Create
         public IActionResult Create()
         {
-            ViewData["CarId"] = new SelectList(_context.Car, "Id", "Id");
-            ViewData["ClieuntId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["CarId"] = new SelectList(_context.Car, "Id", "Description");
+            //ViewData["ClieuntId"] = new SelectList(_context.Users, "Id", "Description");
+
             return View();
         }
 
@@ -58,16 +75,18 @@ namespace Carrent.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CarId,ClieuntId,DateOn,DateOff,RegesterOn")] Rezervation rezervation)
+        public async Task<IActionResult> Create([Bind("CarId,DateOn,DateOff")] Rezervation rezervation)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(rezervation);
+                rezervation.ClieuntId =  _userManager.GetUserId(User);
+                rezervation.RegesterOn = DateTime.Now;
+                _context.Rezervation.Add(rezervation);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CarId"] = new SelectList(_context.Car, "Id", "Id", rezervation.CarId);
-            ViewData["ClieuntId"] = new SelectList(_context.Users, "Id", "Id", rezervation.ClieuntId);
+            ViewData["CarId"] = new SelectList(_context.Car, "Id", "Description", rezervation.CarId);
+            //ViewData["ClieuntId"] = new SelectList(_context.Users, "Id", "Id", rezervation.ClieuntId);
             return View(rezervation);
         }
 
@@ -84,8 +103,8 @@ namespace Carrent.Controllers
             {
                 return NotFound();
             }
-            ViewData["CarId"] = new SelectList(_context.Car, "Id", "Id", rezervation.CarId);
-            ViewData["ClieuntId"] = new SelectList(_context.Users, "Id", "Id", rezervation.ClieuntId);
+            ViewData["CarId"] = new SelectList(_context.Car, "Id", "Description", rezervation.CarId);
+            //ViewData["ClieuntId"] = new SelectList(_context.Users, "Id", "Id", rezervation.ClieuntId);
             return View(rezervation);
         }
 
@@ -94,7 +113,7 @@ namespace Carrent.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CarId,ClieuntId,DateOn,DateOff,RegesterOn")] Rezervation rezervation)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CarId,DateOn,DateOff")] Rezervation rezervation)
         {
             if (id != rezervation.Id)
             {
@@ -105,7 +124,9 @@ namespace Carrent.Controllers
             {
                 try
                 {
-                    _context.Update(rezervation);
+                    rezervation.ClieuntId = _userManager.GetUserId(User);
+                    rezervation.RegesterOn = DateTime.Now;
+                    _context.Rezervation.Update(rezervation);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -121,8 +142,8 @@ namespace Carrent.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CarId"] = new SelectList(_context.Car, "Id", "Id", rezervation.CarId);
-            ViewData["ClieuntId"] = new SelectList(_context.Users, "Id", "Id", rezervation.ClieuntId);
+            ViewData["CarId"] = new SelectList(_context.Car, "Id", "Description", rezervation.CarId);
+            //ViewData["ClieuntId"] = new SelectList(_context.Users, "Id", "Id", rezervation.ClieuntId);
             return View(rezervation);
         }
 

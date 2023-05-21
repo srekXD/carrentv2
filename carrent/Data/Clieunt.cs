@@ -6,11 +6,11 @@ namespace carrent.Data
     {
         public string FullName { get; set; }
 
-        public int EGN { get; set; }
+        public string EGN { get; set; }
 
-        public string Adres { get; set; }
+        public string Address { get; set; }
 
-        public ICollection<Rezervation> Rezerants { get; set; } 
+        public ICollection<Rezervation> Reservations { get; set; } 
 
         public DateTime RegesteredOn { get; set; }
     }

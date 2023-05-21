@@ -55,11 +55,13 @@ namespace Carrent.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Brand,Model,Description,RegesteredOn")] BrandModel brandModel)
+        public async Task<IActionResult> Create([Bind("Brand,Model,Description")] BrandModel brandModel)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(brandModel);
+                brandModel.RegesteredOn=DateTime.Now;
+
+                _context.BrandModel.Add(brandModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -87,7 +89,7 @@ namespace Carrent.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Brand,Model,Description,RegesteredOn")] BrandModel brandModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Brand,Model,Description")] BrandModel brandModel)
         {
             if (id != brandModel.Id)
             {
@@ -98,7 +100,8 @@ namespace Carrent.Controllers
             {
                 try
                 {
-                    _context.Update(brandModel);
+                    brandModel.RegesteredOn=DateTime.Now;
+                    _context.BrandModel.Update(brandModel);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

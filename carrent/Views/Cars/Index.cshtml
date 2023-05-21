@@ -1,9 +1,43 @@
-﻿@model IEnumerable<carrent.Data.Car>
+﻿@using carrent.Data;
+@model IEnumerable<carrent.Data.Car>
 
 @{
     ViewData["Title"] = "Index";
 }
 
+<style>
+    footer{
+    margin-top: auto;
+}
+    }
+  body{
+        display: flex;
+  }
+
+
+   .div_naiprodavani{
+    display:flex;
+    margin-right:auto;
+    margin :80px 0px;
+}
+.img-with-text {
+    text-align: center;
+    color: #ccccaa;
+   
+    
+}
+
+    .img-with-text img {
+        display: block;
+        margin: 0 200px;
+    }
+.div_div {
+    
+    background-color: rgba(68,68,68,.6);
+    margin:0 4px;
+    
+}
+</style>
 <h1>Index</h1>
 
 <p>
@@ -22,6 +56,9 @@
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.ImageUrl)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Status)
             </th>
             <th>
@@ -37,13 +74,16 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.BrandModels.Id)
+                @Html.DisplayFor(modelItem => item.BrandModels.Brand)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Year)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                    <img src="@Html.DisplayFor(modelItem => item.ImageUrl)" width="100" >
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Status)
@@ -60,6 +100,24 @@
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-}
+            
+        <div class="div_naiprodavani">
+
+            <a href="Game.html">
+                <div class="img-with-text">
+                    <div class="div_div">
+                        <center>
+                                <img src="@Html.DisplayFor(modelItem => item.ImageUrl)" width="500">
+                                <p>@Html.DisplayFor(modelItem => item.BrandModels.Brand)</p>
+                                <p>@Html.DisplayFor(modelItem => item.Price)$/h свободна:@Html.DisplayFor(modelItem => item.Status)</p>
+                        </center>
+                    </div>
+                </div>
+            </a>
+         </div>
+          
+
+        }
     </tbody>
 </table>
+

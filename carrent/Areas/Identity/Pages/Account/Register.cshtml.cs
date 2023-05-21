@@ -78,23 +78,22 @@ namespace Carrent.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required]
-           
             [Display(Name = "UserName")]
             public string Username { get; set; }
 
-            [Required]
-            
+            [Required]  
             [Display(Name = "Fullname")]
             public string FullName { get; set; }
 
-            [Required]
-            
+            [Required]       
             [Display(Name = "Adres")]
             public string Adres { get; set; }
 
-            
-            
-            
+
+            [Required]
+            [Display(Name = "EGN")]
+            public string EGN { get; set; }
+
 
 
             [Required]
@@ -127,19 +126,19 @@ namespace Carrent.Areas.Identity.Pages.Account
                 Clieunt user= new Clieunt();
                 user.UserName = Input.Username;
                 user.Email = Input.Email;
-                
-                user.Adres = Input.Adres;
+                user.EGN= Input.EGN;    
+                user.Address = Input.Adres;
                 user.FullName = Input.FullName;
 
 
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                await _userStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-
+                   await _userManager.AddToRoleAsync(user, "User");
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

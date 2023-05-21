@@ -1,4 +1,5 @@
-﻿@model carrent.Data.BrandModel
+﻿
+@model carrent.Data.BrandModel
 
 @{
     ViewData["Title"] = "Create";
@@ -27,11 +28,11 @@
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            @*<div class="form-group">
                 <label asp-for="RegesteredOn" class="control-label"></label>
                 <input asp-for="RegesteredOn" class="form-control" />
                 <span asp-validation-for="RegesteredOn" class="text-danger"></span>
-            </div>
+            </div>*@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
