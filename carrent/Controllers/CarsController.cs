@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using carrent.Data;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Drawing.Drawing2D;
 
 namespace Carrent.Controllers
 {
@@ -47,35 +45,37 @@ namespace Carrent.Controllers
         }
 
         // GET: Cars/Create
-        
         public IActionResult Create()
         {
-           
-            ViewData["BrandModelId"] = _context.BrandModel.Select(x =>new SelectListItem
+            ViewData["BrandModelId"] = _context.BrandModel.Select(x => new SelectListItem
             {
                 Text = x.Brand + " " + x.Model,
                 Value = x.Id.ToString()
             }
-            ); /*= new SelectList(_context.BrandModel, "Id", "Brand");*/
+            );
             return View();
         }
 
-        
-       
         // POST: Cars/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,BrandModelId,Year,Description,Status,Price,RegesterOn")] Car car)
+        public async Task<IActionResult> Create([Bind("BrandModelId,Year,Description,ImageUrl,Status,Price")] Car car)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(car);
+                car.RegesterOn=DateTime.Now;
+                _context.Car.Add(car);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BrandModelId"] = new SelectList(_context.BrandModel, "Id", "Id", car.BrandModelId);
+            ViewData["BrandModelId"] = _context.BrandModel.Select(x => new SelectListItem
+            {
+                Text = x.Brand + " " + x.Model,
+                Value = x.Id.ToString()
+            }
+             );
             return View(car);
         }
 
@@ -92,12 +92,7 @@ namespace Carrent.Controllers
             {
                 return NotFound();
             }
-            ViewData["BrandModelId"] = _context.BrandModel.Select(x => new SelectListItem
-            {
-                Text = x.Brand + " " + x.Model,
-                Value = x.Id.ToString()
-            }
-            ); /*new SelectList(_context.BrandModel, "Id", "Id", car.BrandModelId);*/
+            ViewData["BrandModelId"] = _context.BrandModel.Select(x => new SelectListItem { Text = x.Brand + " " + x.Model, Value = x.Id.ToString() });
             return View(car);
         }
 
@@ -106,7 +101,7 @@ namespace Carrent.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BrandModelId,Year,Description,Status,Price,RegesterOn")] Car car)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BrandModelId,Year,Description,ImageUrl,Status,Price")] Car car)
         {
             if (id != car.Id)
             {
@@ -117,7 +112,8 @@ namespace Carrent.Controllers
             {
                 try
                 {
-                    _context.Update(car);
+                    car.RegesterOn=DateTime.Now;
+                    _context.Car.Update(car);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -133,7 +129,7 @@ namespace Carrent.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BrandModelId"] = new SelectList(_context.BrandModel, "Id", "Id", car.BrandModelId);
+            ViewData["BrandModelId"] = _context.BrandModel.Select(x => new SelectListItem { Text = x.Brand + " " + x.Model, Value = x.Id.ToString() });
             return View(car);
         }
 

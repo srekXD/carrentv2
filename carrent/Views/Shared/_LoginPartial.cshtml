@@ -2,7 +2,11 @@
 @using carrent.Data;
 @inject SignInManager<Clieunt> SignInManager
 @inject UserManager<Clieunt> UserManager
-
+<style>
+    body{
+        color:black;
+    }
+</style>
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {

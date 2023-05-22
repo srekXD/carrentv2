@@ -1,5 +1,19 @@
 ﻿<!DOCTYPE html>
+<style>
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: red;
+        color: white;
+        text-align: center;
+        height:20px;
+
+    }
+</style>
 <html lang="en">
+    
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,12 +21,14 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/carrent.styles.css" asp-append-version="true" />
+   
+   
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">carrent</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/img/sjtusnmu.jpg" width="55px" height="55px" /></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -36,12 +52,41 @@
             @RenderBody()
         </main>
     </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - carrent - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <center>
+    <footer>
+        <div style="background-color:lightslategray; display:flex;">
+            <div >
+                <div >
+                    <div>
+                        <span style="text-align:center; color:darkgray;">
+                            Отмяната на резервация 24 часа, преди часа на получаване на автомобила е напълно БЕЗПЛАТНА
+                        </span>
+                    </div>
+                    <div >
+                        <img src="https://easyrent.bg/assets/payment-methods.png"  alt="Payment method Visa, MasterCard, PayPal">
+                    </div>
+                    <div >
+                        <div >
+                            <div >
+                                <a href="https://www.facebook.com/easyrentbulgaria/" target="_blank" >
+                                    <img src="https://easyrent.bg/assets/share/facebook.svg">
+                                </a>
+                                <a href="https://www.instagram.com/easyrentbulgaria/" target="_blank" >
+                                    <img src="https://easyrent.bg/assets/share/instagram.svg">
+                                </a>
+                                <a href="https://twitter.com/easyrentbg" target="_blank" >
+                                    <img src="https://easyrent.bg/assets/share/twitter.svg">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+   
+        
     </footer>
+    </center>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
