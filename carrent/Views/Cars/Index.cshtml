@@ -6,43 +6,71 @@
 }
 
 <style>
-    footer{
-    margin-top: auto;
-}
+    a:link {
+        text-decoration: none;
     }
-  body{
+
+
+    a:visited {
+        text-decoration: none;
+    }
+
+
+    a:hover {
+        text-decoration: none;
+    }
+
+
+    a:active {
+        text-decoration: none;
+    }
+    
+    .div_naiprodavani-container {
         display: flex;
-  }
-
-
-   .div_naiprodavani{
-    display:flex;
-    margin-right:auto;
-    margin :80px 0px;
-}
-.img-with-text {
-    text-align: center;
-    color: #ccccaa;
-   
-    
-}
-
-    .img-with-text img {
-        display: block;
-        margin: 0 200px;
+        flex-wrap: wrap;
     }
-.div_div {
-    
-    background-color: rgba(68,68,68,.6);
-    margin:0 4px;
-    
-}
+
+    .div_naiprodavani {
+        flex: 0 0 300px; /* Adjust the width as needed */
+        margin-right: 30px; /* Add spacing between elements */
+        margin-bottom: 10px; /* Add spacing below elements */
+    }
+
+ .img{
+     height:250px;
+     width:250px;
+ }
+
+
+   
+
+    .img-with-text {
+        text-align: center;
+        color: #ccccaa;
+    }
+
+        .img-with-text img {
+            display: block;
+            margin:auto;
+        }
+
+    .div_div {
+        background-color: rgba(68,68,68,.6);
+        
+    }
 </style>
-<h1>Index</h1>
+@{
+    if (User.IsInRole("Admin"))
+    {
+        <h1>Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+    
+
+
+
 <table class="table">
     <thead>
         <tr>
@@ -100,24 +128,40 @@
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-            
-        <div class="div_naiprodavani">
+        }
+        </tbody>
+        </table>
+    }
+    <br />
+}
 
-            <a href="Game.html">
+
+  <div class="div_naiprodavani-container">
+    @foreach (var item in Model)
+    {
+
+        <div class="div_naiprodavani">
+           <a asp-action="Create" asp-controller="Rezervations" asp-route-carId="@item.Id">
+
                 <div class="img-with-text">
                     <div class="div_div">
                         <center>
-                                <img src="@Html.DisplayFor(modelItem => item.ImageUrl)" width="500">
-                                <p>@Html.DisplayFor(modelItem => item.BrandModels.Brand)</p>
-                                <p>@Html.DisplayFor(modelItem => item.Price)$/h свободна:@Html.DisplayFor(modelItem => item.Status)</p>
+                            <img class="img" src="@Html.DisplayFor(modelItem => item.ImageUrl)">
+                            <p>@Html.DisplayFor(modelItem => item.BrandModels.Brand) @Html.DisplayFor(modelItem => item.BrandModels.Model)</p>
+                            <p>@Html.DisplayFor(modelItem => item.Price)$/h свободна:@Html.DisplayFor(modelItem => item.Status)</p>
                         </center>
                     </div>
                 </div>
             </a>
-         </div>
+        </div>
+    }
+    
+    </div>
+
+
+        
           
 
-        }
-    </tbody>
-</table>
+        
+    
 

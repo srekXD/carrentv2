@@ -1,14 +1,16 @@
 ﻿<!DOCTYPE html>
 <style>
-    .footer {
+   footer {
         position: fixed;
         left: 0;
         bottom: 0;
         width: 100%;
-        background-color: red;
-        color: white;
+        background-color:lightslategray; 
+        
         text-align: center;
-        height:20px;
+        height:90px;
+        text-align:center;
+        color:darkgray;
 
     }
 </style>
@@ -41,6 +43,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        <li>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Cars" asp-action="Index">Cars</a>
+                        </li>
+                        <li>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Rezervations" asp-action="Index">Reservations</a>
+                        </li>
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
@@ -52,13 +60,14 @@
             @RenderBody()
         </main>
     </div>
-    <center>
+    
     <footer>
-        <div style="background-color:lightslategray; display:flex;">
+        <center>
+        <div >
             <div >
                 <div >
                     <div>
-                        <span style="text-align:center; color:darkgray;">
+                        <span >
                             Отмяната на резервация 24 часа, преди часа на получаване на автомобила е напълно БЕЗПЛАТНА
                         </span>
                     </div>
@@ -83,10 +92,10 @@
                 </div>
             </div>
         </div>
-   
+        </center>
         
     </footer>
-    </center>
+    
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
