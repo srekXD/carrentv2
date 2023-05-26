@@ -6,11 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using carrent.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Carrent.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class BrandModelsController : Controller
     {
+        
         private readonly CarDbContext _context;
 
         public BrandModelsController(CarDbContext context)

@@ -14,6 +14,7 @@ namespace Carrent.Controllers
     [Authorize]
     public class RezervationsController : Controller
     {
+
         private readonly CarDbContext _context;
         private readonly UserManager<Clieunt> _userManager;
 
@@ -62,13 +63,25 @@ namespace Carrent.Controllers
         }
 
         // GET: Rezervations/Create
-        public IActionResult Create()
+        public IActionResult Create(int carId)
         {
-            ViewData["CarId"] = new SelectList(_context.Car, "Id", "Description");
-            //ViewData["ClieuntId"] = new SelectList(_context.Users, "Id", "Description");
+
+           var car = _context.Car.Include(c => c.BrandModels).First(c => c.Id == carId);
+
+            ViewBag.CarName = car.BrandModels.Brand;
+
+
+
+            ViewData["BrandModels"] = _context.BrandModel
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Brand + " " + x.Model,
+                    Value = x.Id.ToString()
+                });
 
             return View();
         }
+
 
         // POST: Rezervations/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -89,7 +102,7 @@ namespace Carrent.Controllers
             //ViewData["ClieuntId"] = new SelectList(_context.Users, "Id", "Id", rezervation.ClieuntId);
             return View(rezervation);
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Rezervations/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -107,7 +120,7 @@ namespace Carrent.Controllers
             //ViewData["ClieuntId"] = new SelectList(_context.Users, "Id", "Id", rezervation.ClieuntId);
             return View(rezervation);
         }
-
+        [Authorize(Roles = "Admin")]
         // POST: Rezervations/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -146,7 +159,7 @@ namespace Carrent.Controllers
             //ViewData["ClieuntId"] = new SelectList(_context.Users, "Id", "Id", rezervation.ClieuntId);
             return View(rezervation);
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Rezervations/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -166,7 +179,7 @@ namespace Carrent.Controllers
 
             return View(rezervation);
         }
-
+        [Authorize(Roles = "Admin")]
         // POST: Rezervations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

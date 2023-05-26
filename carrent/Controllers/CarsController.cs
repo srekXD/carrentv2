@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using carrent.Data;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace Carrent.Controllers
 {
@@ -24,7 +26,7 @@ namespace Carrent.Controllers
             var carDbContext = _context.Car.Include(c => c.BrandModels);
             return View(await carDbContext.ToListAsync());
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Cars/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -43,7 +45,7 @@ namespace Carrent.Controllers
 
             return View(car);
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Cars/Create
         public IActionResult Create()
         {
@@ -55,7 +57,7 @@ namespace Carrent.Controllers
             );
             return View();
         }
-
+        [Authorize(Roles = "Admin")]
         // POST: Cars/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -78,7 +80,7 @@ namespace Carrent.Controllers
              );
             return View(car);
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Cars/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
